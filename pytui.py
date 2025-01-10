@@ -281,10 +281,10 @@ class Text(VisualComponent):
         self.win.addstr(self.row, self.column, text, attrib)
 
 #---
-# Text
+# Input
 #
 # Description:
-#   Basic text component used to retain text state during a repaint
+#   Basic line input component that supports Insert, Delete, Backspace, Left, Right, Home, and End keys
 #---
 class Input(VisualComponent):
     def __init__(self, win: any, row: int, column: int, id: int, width: int = 0, value: str = '', max_width: int = 0, validate_fn: Callable = None):
