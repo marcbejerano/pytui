@@ -19,8 +19,8 @@ def main(stdscr: any):
     frame.add_child(pytui.Button    (stdscr, row=2, column=2, width=20, id=12345, label="Button", call_fn=click_button))
     frame.add_child(pytui.Button    (stdscr, row=4, column=2, width=20, id=54321, label="Next", call_fn=click_button))
     frame.add_child(pytui.Checkbox  (stdscr, row=6, column=2, width=20, id=13579, label="Checkbox", call_fn=click_checkbox))
-    frame.add_child(pytui.Text      (stdscr, row=8, column=2, width=30, id=13579, text="plain text", attrib=curses.A_BOLD))
-    frame.add_child(pytui.Input     (stdscr, row=10, column=2, width=30, id=13579, value="edit this line of text", max_width=60))
+    frame.add_child(pytui.Text      (stdscr, row=8, column=2, width=30, id=13577, text="plain text", attrib=curses.A_BOLD))
+    frame.add_child(pytui.Input     (stdscr, row=10, column=2, width=30, id=13575, value="edit this line of text", max_width=60))
     frame.process()
 
 if __name__ == "__main__":
