@@ -126,7 +126,7 @@ class VisualComponent(Component):
     def getyx(self) -> (int, int):
         return self.row, self.column
 
-    def rapint(self):
+    def repaint(self):
         pass
 
     def get_focus(self):
