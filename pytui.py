@@ -111,15 +111,15 @@ class Component:
 # VisualComponent
 #
 # Description:
-#   Basic visual componenet that maintains location and an id
+#   Basic visual component that maintains location and an idx
 #---
 class VisualComponent(Component):
-    def __init__(self, win: any, row: int, column: int, id: int, can_focus: bool = False):
+    def __init__(self, win: any, row: int, column: int, idx: int, can_focus: bool = False):
         Component.__init__(self)
         self.win = win
         self.row = row
         self.column = column
-        self.id = id
+        self.idx = idx
         self.can_focus = can_focus
         self.cursor_offset = 0
 
@@ -140,10 +140,10 @@ class VisualComponent(Component):
 #---
 # FrameWindow
 #---
-class FrameWindow(Component):
+class FrameWindow(VisualComponent):
     def __init__(self, stdscr: any, title: str = None):
-        Component.__init__(self)
-        self.win = stdscr
+        VisualComponent.__init__(self, stdscr, 0, 0, 0)
+        self.rows, self.columns = self.win.getmaxyx()
         self.title = title
         self.resize()
         curses.noecho()
@@ -197,7 +197,7 @@ class FrameWindow(Component):
                 try:
                     row, column = self.current_child().getyx()
                     key = self.win.getkey(row, column + self.current_child().cursor_offset)
-                except:
+                except Exception:
                     key = None
 
 
@@ -208,8 +208,8 @@ class FrameWindow(Component):
 #   Basic button visual component
 #---
 class Button(VisualComponent):
-    def __init__(self, win: any, row: int, column: int, id: int, label: str, width: int = 0, call_fn: Callable = None):
-        VisualComponent.__init__(self, win, row, column, id, can_focus=True)
+    def __init__(self, win: any, row: int, column: int, idx: int, label: str, width: int = 0, call_fn: Callable = None):
+        VisualComponent.__init__(self, win, row, column, idx, can_focus=True)
         self.label = label
         self.width = width
         self.call_fn = call_fn
@@ -233,8 +233,8 @@ class Button(VisualComponent):
 #   Basic visual state component
 #---
 class Checkbox(VisualComponent):
-    def __init__(self, win: any, row: int, column: int, id: int, label: str, width: int = 0, state: bool = False, call_fn: Callable = None):
-        VisualComponent.__init__(self, win, row, column, id, can_focus=True)
+    def __init__(self, win: any, row: int, column: int, idx: int, label: str, width: int = 0, state: bool = False, call_fn: Callable = None):
+        VisualComponent.__init__(self, win, row, column, idx, can_focus=True)
         self.label = label
         self.width = width
         self.state = state
@@ -269,8 +269,8 @@ class Checkbox(VisualComponent):
 #   Basic text component used to retain text state during a repaint
 #---
 class Text(VisualComponent):
-    def __init__(self, win: any, row: int, column: int, id: int, text: str, width: int = 0, attrib: any = None):
-        VisualComponent.__init__(self, win, row, column, id, can_focus=False)
+    def __init__(self, win: any, row: int, column: int, idx: int, text: str, width: int = 0, attrib: any = None):
+        VisualComponent.__init__(self, win, row, column, idx, can_focus=False)
         self.width = width
         self.text = text
         self.attrib = attrib
@@ -287,8 +287,8 @@ class Text(VisualComponent):
 #   Basic line input component that supports Insert, Delete, Backspace, Left, Right, Home, and End keys
 #---
 class Input(VisualComponent):
-    def __init__(self, win: any, row: int, column: int, id: int, width: int = 0, value: str = '', max_width: int = 0, validate_fn: Callable = None):
-        VisualComponent.__init__(self, win, row, column, id, can_focus=True)
+    def __init__(self, win: any, row: int, column: int, idx: int, width: int = 0, value: str = '', max_width: int = 0, validate_fn: Callable = None):
+        VisualComponent.__init__(self, win, row, column, idx, can_focus=True)
         self.width = width
         self.value = value
         self.max_width = max_width
@@ -310,9 +310,9 @@ class Input(VisualComponent):
         self.win.addstr(self.row, self.column, text_label, attrib)
 
     def key_pressed(self, key):
-        valid = True if self.validate_fn is None else self.validate_fn(self.value)
+        validx = True if self.validate_fn is None else self.validate_fn(self.value)
 
-        if valid:
+        if validx:
             if key == 'KEY_LEFT' and self.cursor_offset > 0:
                 self.cursor_offset = self.cursor_offset - 1
             elif key == 'KEY_RIGHT' and self.cursor_offset < len(self.value):
